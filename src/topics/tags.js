@@ -18,7 +18,7 @@ const batch = require('../batch');
 const cache = require('../cache');
 
 module.exports = function (Topics) {
-	console.log('dcharkvi')
+	console.log('dcharkvi');
 	Topics.createTags = async function (tags, tid, timestamp) {
 		if (!Array.isArray(tags) || !tags.length) {
 			return;
@@ -70,7 +70,7 @@ module.exports = function (Topics) {
 			cids.map(cid => `cid:${cid}:tags`), '-inf', 0
 		);
 	};
-	console.log("dcharkvi")
+	console.log('dcharkvi');
 	Topics.validateTags = async function (tags, cid, uid, tid = null) {
 		if (!Array.isArray(tags)) {
 			throw new Error('[[error:invalid-data]]');
@@ -105,7 +105,7 @@ module.exports = function (Topics) {
 			throw new Error('[[error:cant-remove-system-tag]]');
 		}
 	}
-	console.log('dcharkvi')
+	console.log('dcharkvi');
 	async function filterCategoryTags(tags, cid) {
 		const tagWhitelist = await categories.getTagWhitelist([cid]);
 		if (!Array.isArray(tagWhitelist[0]) || !tagWhitelist[0].length) {
@@ -134,7 +134,7 @@ module.exports = function (Topics) {
 			.map(cid => ([`cid:${cid}:tags`, 0, tag]));
 		await db.sortedSetAddBulk(bulkAdd);
 	};
-	console.log('dcharkvi')
+	console.log('dcharkvi');
 	Topics.renameTags = async function (data) {
 		await Promise.all(data.map(tagData => renameTag(tagData.value, tagData.newName)));
 	};
@@ -148,7 +148,7 @@ module.exports = function (Topics) {
 		await Topics.updateCategoryTagsCount(Object.keys(allCids), [newTagName]);
 		await updateTagCount(newTagName);
 	}
-	console.log('dcharkvi')
+	console.log('dcharkvi');
 	async function processTagForAllTids(tag, newTagName) {
 		const allCids = {};
 		await batch.processSortedSet(`tag:${tag}:topics`, async (tids) => {
