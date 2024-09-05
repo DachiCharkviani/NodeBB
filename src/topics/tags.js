@@ -18,8 +18,8 @@ const batch = require('../batch');
 const cache = require('../cache');
 
 module.exports = function (Topics) {
-	console.log('dcharkvi');
 	Topics.createTags = async function (tags, tid, timestamp) {
+		console.log('dcharkvi');
 		if (!Array.isArray(tags) || !tags.length) {
 			return;
 		}
@@ -30,11 +30,13 @@ module.exports = function (Topics) {
 		await updateTagCountsForAll(tags);
 	};
 	function generateTopicSets(tags, cid) {
+		console.log('dcharkvi');
 		return tags.map(tag => `tag:${tag}:topics`).concat(
 			tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
 		);
 	}
 	async function updateTagCountsForAll(tags) {
+		console.log('dcharkvi');
 		await Promise.all(tags.map(updateTagCount));
 	}
 	Topics.filterTags = async function (tags, cid) {
@@ -70,8 +72,8 @@ module.exports = function (Topics) {
 			cids.map(cid => `cid:${cid}:tags`), '-inf', 0
 		);
 	};
-	console.log('dcharkvi');
 	Topics.validateTags = async function (tags, cid, uid, tid = null) {
+		console.log('dcharkvi');
 		if (!Array.isArray(tags)) {
 			throw new Error('[[error:invalid-data]]');
 		}
@@ -105,7 +107,6 @@ module.exports = function (Topics) {
 			throw new Error('[[error:cant-remove-system-tag]]');
 		}
 	}
-	console.log('dcharkvi');
 	async function filterCategoryTags(tags, cid) {
 		const tagWhitelist = await categories.getTagWhitelist([cid]);
 		if (!Array.isArray(tagWhitelist[0]) || !tagWhitelist[0].length) {
@@ -134,11 +135,12 @@ module.exports = function (Topics) {
 			.map(cid => ([`cid:${cid}:tags`, 0, tag]));
 		await db.sortedSetAddBulk(bulkAdd);
 	};
-	console.log('dcharkvi');
 	Topics.renameTags = async function (data) {
+		console.log('dcharkvi');
 		await Promise.all(data.map(tagData => renameTag(tagData.value, tagData.newName)));
 	};
 	async function renameTag(tag, newTagName) {
+		console.log('dcharkvi');
 		if (!newTagName || tag === newTagName) {
 			return;
 		}
@@ -148,7 +150,6 @@ module.exports = function (Topics) {
 		await Topics.updateCategoryTagsCount(Object.keys(allCids), [newTagName]);
 		await updateTagCount(newTagName);
 	}
-	console.log('dcharkvi');
 	async function processTagForAllTids(tag, newTagName) {
 		const allCids = {};
 		await batch.processSortedSet(`tag:${tag}:topics`, async (tids) => {
