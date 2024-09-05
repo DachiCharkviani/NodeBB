@@ -2503,6 +2503,36 @@ describe('Topic\'s', () => {
 			const score = await db.sortedSetScore('topics:scheduled', topicData.tid);
 			assert(!score);
 		});
+
+		it('should throw an error when tags is not an array', (done) => {
+			const invalidTags = 'notAnArray';
+			const cid = 1;
+			const uid = 1;
+			topics.validateTags(invalidTags, cid, uid)
+				.then(() => {
+					done(new Error('Test failed: Expected an error to be thrown'));
+				})
+				.catch((err) => {
+					try {
+						assert.equal(err.message, '[[error:invalid-data]]');
+						done();
+					} catch (assertionErr) {
+						done(assertionErr);
+					}
+				});
+		});
+
+		it('should do nothing if newTagName is null or the same as tag', (done) => {
+			const tag = 'existingTag';
+			const newTagName = tag;
+			topics.renameTags([{ value: tag, newName: newTagName }])
+				.then(() => {
+					done();
+				})
+				.catch((err) => {
+					done(new Error(`Test failed: Unexpected error was thrown - ${err.message}`));
+				});
+		});
 	});
 });
 
